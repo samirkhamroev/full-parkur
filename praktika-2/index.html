@@ -1,0 +1,63 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Практика 2 — Products API</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; padding: 16px; }
+    button { margin: 6px 6px 6px 0; padding: 8px 10px; cursor: pointer; }
+    pre { background: #111; color: #eaeaea; padding: 12px; border-radius: 10px; overflow: auto; }
+    input { padding: 6px 8px; margin-right: 6px; width: 140px; }
+  </style>
+</head>
+<body>
+  <h1>Products API (localhost:3000)</h1>
+
+  <div>
+    <button id="btnAll">GET /products</button>
+    <input id="id" placeholder="id (например 1)" />
+    <button id="btnById">GET /products/:id</button>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <input id="title" placeholder="title" />
+    <input id="price" placeholder="price (число)" />
+    <button id="btnCreate">POST /products</button>
+  </div>
+
+  <pre id="out">Нажми кнопку для запроса…</pre>
+
+  <script>
+    const out = document.getElementById('out');
+    const base = 'http://localhost:3000';
+
+    const show = (data) => out.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+
+    document.getElementById('btnAll').onclick = async () => {
+      const res = await fetch(`${base}/products`);
+      show(await res.json());
+    };
+
+    document.getElementById('btnById').onclick = async () => {
+      const id = document.getElementById('id').value.trim();
+      const res = await fetch(`${base}/products/${id}`);
+      show(await res.json());
+    };
+
+    document.getElementById('btnCreate').onclick = async () => {
+      const title = document.getElementById('title').value.trim();
+      const price = Number(document.getElementById('price').value);
+
+      const res = await fetch(`${base}/products`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, price })
+      });
+
+      show(await res.json());
+    };
+  </script>
+</body>
+</html>
