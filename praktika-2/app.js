@@ -141,3 +141,4 @@ app.delete('/products/:id', (req, res) => {
 app.listen(port, () => {
   console.log(`Сервер запущен на http://localhost:${port}`);
 });
+ 
